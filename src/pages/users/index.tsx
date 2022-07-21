@@ -6,6 +6,7 @@ import { Header } from "../../components/Header";
 import Link from "next/link";
 
 import { useQuery } from "@tanstack/react-query";
+import { api } from "../../services/api";
 
 type User = {
     id: string;
@@ -17,10 +18,8 @@ type User = {
 export default function UserList() {
 
     const { data, isLoading, isFetching, error } = useQuery(['users'], async () => {
-        const response = await fetch('http://localhost:3000/api/users')
-        const data = await response.json()
-
-
+        const { data } = await api.get('users')
+    
         return data;
     })
 
@@ -119,7 +118,11 @@ export default function UserList() {
 
                             </Table>
 
-                            <Pagination />
+                            <Pagination 
+                                totalCurrentRegisters={200}
+                                currentPage={5}
+                                onPageChange={()=>{}}
+                            />
 
                         </>
                     )}
