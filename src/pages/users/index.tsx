@@ -7,6 +7,7 @@ import Link from "next/link";
 
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../../services/api";
+import { useState } from "react";
 
 type User = {
     id: string;
@@ -15,14 +16,25 @@ type User = {
     created_at: string;
 }
 
+
+
 export default function UserList() {
+    const [page, setPage] = useState(1);
 
-    const { data, isLoading, isFetching, error } = useQuery(['users'], async () => {
-        const { data } = await api.get('users')
-    
-        return data;
+    const { data, isLoading, isFetching, error } = useQuery(['users', page], async () => {
+        const { data, headers } = await api.get('users', {
+            params: {
+                page,
+
+            }
+        })
+        const totalCount = Number(headers['x-total-count'])
+        
+        return {
+            data,
+            totalCount,
+        }
     })
-
 
 
     return (
@@ -78,7 +90,7 @@ export default function UserList() {
                                 </Thead>
 
                                 <Tbody>
-                                    {data.users.map((user: User) => (
+                                    {data?.data.users.map((user: User) => (
                                         <Tr key={user.id}>
                                             <Td px="6">
                                                 <Checkbox colorScheme="pink" />
@@ -119,9 +131,9 @@ export default function UserList() {
                             </Table>
 
                             <Pagination 
-                                totalCurrentRegisters={200}
-                                currentPage={5}
-                                onPageChange={()=>{}}
+                                totalCurrentRegisters={data?.totalCount}
+                                currentPage={page}
+                                onPageChange={setPage}
                             />
 
                         </>

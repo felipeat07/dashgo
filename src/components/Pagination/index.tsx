@@ -2,7 +2,7 @@ import { Box, Button, Stack, Text } from "@chakra-ui/react";
 import { PaginationItem } from "./PaginationItem";
 
 interface PaginationProps {
-    totalCurrentRegisters: number;
+    totalCurrentRegisters: number | any //depois reolver este problema de tipagem;
     registerPerPage?: number;
     currentPage?: number;
     onPageChange: (page: number) => void;
@@ -55,7 +55,7 @@ export function Pagination({
 
                 {currentPage > (1 + siblingCount) && (
                     <>
-                        <PaginationItem pageNumber={1} />
+                        <PaginationItem onPageChange={onPageChange} pageNumber={1} />
                         { currentPage > (2 + siblingCount) && (
                         <Text color='gray.300' width="6" textAlign='center'>...</Text>
                         )}
@@ -63,15 +63,15 @@ export function Pagination({
                 )}
 
                 {previousPage.length > 0 && previousPage.map(page => {
-                    return <PaginationItem key={page} pageNumber={page} />
+                    return <PaginationItem onPageChange={onPageChange} key={page} pageNumber={page} />
                 })}
 
 
-                <PaginationItem pageNumber={currentPage} isCurrent />
+                <PaginationItem onPageChange={onPageChange} pageNumber={currentPage} isCurrent />
 
 
                 {nextPages.length > 0 && nextPages.map(page => {
-                    return <PaginationItem key={page} pageNumber={page} />
+                    return <PaginationItem onPageChange={onPageChange} key={page} pageNumber={page} />
                 })}
 
 
@@ -80,7 +80,7 @@ export function Pagination({
                         { currentPage + 1 + siblingCount < lastPage && (
                         <Text color='gray.300' width="6" textAlign='center'>...</Text>
                         )}
-                        <PaginationItem pageNumber={lastPage} />
+                        <PaginationItem onPageChange={onPageChange} pageNumber={lastPage} />
                     </>
                 )}
 

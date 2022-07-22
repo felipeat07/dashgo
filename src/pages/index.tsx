@@ -5,6 +5,14 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Input } from '../components/Form/Input'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 
+type CreateUserFormData = {
+    name: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+}
+
+
 const signInFormSchema = yup.object().shape({
   email: yup.string().required('O e-mail é obrigatório').email('e-mail inválido'),
   password: yup.string().required('A senha é obrigatória'),
